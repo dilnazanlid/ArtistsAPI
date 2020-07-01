@@ -14,21 +14,21 @@ class ArtistController extends Controller
       return $response;
     }
 
-    private function cleanArray($array){
-      unset($array['locations']);
-      unset($array['concertDates']);
-      unset($array['relations']);
+    private function cleanArray($array, $fieldsToDelete){
+      foreach ($fieldsToDelete as $key) {
+        unset($array[$key]);
+      }
       return $array;
     }
 
     public function getAllArtists(){
       $response = $this->getRequestPattern('artists')->json();
+      $deleteFields = ['locations', 'concertDates', 'relations', 'members'];
 
       for ($i = 0; $i < sizeof($response); $i++) {
-        unset($response[$i]['members']);
-        $response[$i] = $this->cleanArray($response[$i]);
+        $response[$i] = $this->cleanArray($response[$i], $deleteFields);
       }
-
+      
       return view('artists', ['data'=>$response]);
     }
 
@@ -40,8 +40,9 @@ class ArtistController extends Controller
         return view('not_found');
       }
 
+      $deleteFields = ['locations', 'concertDates', 'relations'];
       $response = array_merge($responseArtist->json(), $responseConcerts->json());
-      $response = $this->cleanArray($response);
+      $response = $this->cleanArray($response, $deleteFields);
 
       return view('one_artist', ['data'=>$response]);
     }
