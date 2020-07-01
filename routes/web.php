@@ -18,5 +18,3 @@ Route::get('/', function () { return view('main');})->name('main');
 Route::get('/artists', 'ArtistController@getAllArtists')->name('artists-all');
 
 Route::get('/artists/{id}', 'ArtistController@getOneArtist')->name('artists-one');
-
-Route::get('/artists/{id}/concerts', 'ArtistController@getOneArtistConcerts')->name('artists-concerts');

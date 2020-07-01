@@ -8,27 +8,41 @@ use Illuminate\Support\Facades\Http;
 
 class ArtistController extends Controller
 {
-    public function getAllArtists(){
-      $response = Http::get('https://groupietrackers.herokuapp.com/api/artists');
 
-      return view('artists', ['data'=>$response->json()]);
+    private function getRequestPattern($url){
+      $response = Http::get('https://groupietrackers.herokuapp.com/api/' . $url);
+      return $response;
+    }
+
+    private function cleanArray($array){
+      unset($array['locations']);
+      unset($array['concertDates']);
+      unset($array['relations']);
+      return $array;
+    }
+
+    public function getAllArtists(){
+      $response = $this->getRequestPattern('artists')->json();
+
+      for ($i = 0; $i < sizeof($response); $i++) {
+        unset($response[$i]['members']);
+        $response[$i] = $this->cleanArray($response[$i]);
+      }
+
+      return view('artists', ['data'=>$response]);
     }
 
     public function getOneArtist($id){
-      $response = Http::get('https://groupietrackers.herokuapp.com/api/artists/' . $id);
+      $responseArtist = $this->getRequestPattern('artists/' . $id);
+      $responseConcerts = $this->getRequestPattern('relation/' . $id);
       //check if the given 'id' is within the range
-      if($response->json()['id']=='0'){
+      if($responseArtist->json()['id']=='0'){
         return view('not_found');
       }
-      return view('one_artist', ['data'=>$response->json()]);
-    }
 
-    public function getOneArtistConcerts($id){
-      $response = Http::get('https://groupietrackers.herokuapp.com/api/relation/' . $id);
-      //check if the given 'id' is within the range
-      if($response->json()['id']=='0'){
-        return view('not_found');
-      }
-      return view('one_artist_concerts', ['data'=>$response->json()['datesLocations']]);
+      $response = array_merge($responseArtist->json(), $responseConcerts->json());
+      $response = $this->cleanArray($response);
+
+      return view('one_artist', ['data'=>$response]);
     }
 }

@@ -25,7 +25,7 @@
     </head>
     <body>
       <div class="flex py-4 justify-between items-center nav" style="background-color: #1d1d1f;">
-        <a class="mx-4 font-bold text-xl">Artists API</a>
+        <a class="mx-4 font-bold text-xl" href="/">Artists API</a>
         <nav class="">
           <a class="pr-4" href="/">Home</a>
           <a class="pr-4" href="{{route('artists-all')}}">Artists</a>
