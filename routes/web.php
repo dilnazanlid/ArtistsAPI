@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,7 @@ Route::get('/', function () { return view('main');})->name('main');
 Route::get('/artists', 'ArtistController@getAllArtists')->name('artists-all');
 
 Route::get('/artists/{id}', 'ArtistController@getOneArtist')->name('artists-one');
+
+Route::get('/search', 'SearchController@SearchAll')->name('search');
+
+Route::get('/search/{type}/{location}', 'LocationController@GetArtistsByLocation')->name('location-one');

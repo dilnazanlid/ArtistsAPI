@@ -10,18 +10,44 @@
         a{
           color:white;
         }
-          a:hover{
-            color:orange;
-            text-decoration: none;
-            cursor: pointer;
-          }
-          a:focus{
-            outline:none;
-          }
-          p{
-            color:white;
-          }
+        a:hover{
+          color:orange;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        a:focus{
+          outline:none;
+        }
+        p{
+          color:white;
+        }
+        .spinner {
+          position: absolute;
+          color: transparent !important;
+          pointer-events: none;
+        }
+
+        .spinner::after {
+          content: '';
+          position: absolute !important;
+          top: calc(50% - (1em / 2));
+          left: calc(50% - (1em / 2));
+          display: block;
+          width: 1em;
+          height: 1em;
+          border: 2px solid currentColor;
+          border-radius: 9999px;
+          border-right-color: black;
+          border-top-color: black;
+          animation: spinAround 500ms infinite linear;
+        }
+
+        @keyframes spinAround {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
         </style>
+        <livewire:styles>
     </head>
     <body>
       <div class="flex py-4 justify-between items-center nav" style="background-color: #1d1d1f;">
